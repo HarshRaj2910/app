@@ -19,114 +19,297 @@ async function seed() {
       Test.deleteMany({}),
     ]);
 
-    // Create classes 2-12
-    const classes = [];
+    // Create classes 2-12 with subjects, chapters, notes, resources, tests
     for (let level = 2; level <= 12; level += 1) {
       // eslint-disable-next-line no-await-in-loop
-      const cls = await ClassModel.create({
+      await ClassModel.create({
         name: `Class ${level}`,
         level,
       });
-      classes.push(cls);
+
+      // Core subjects for each class
+      // eslint-disable-next-line no-await-in-loop
+      const maths = await Subject.create({ name: 'Mathematics', classLevel: level });
+      // eslint-disable-next-line no-await-in-loop
+      const science = await Subject.create({ name: 'Science', classLevel: level });
+      // eslint-disable-next-line no-await-in-loop
+      const english = await Subject.create({ name: 'English', classLevel: level });
+      // eslint-disable-next-line no-await-in-loop
+      const social = await Subject.create({ name: 'Social Science', classLevel: level });
+
+      // Chapters
+      // eslint-disable-next-line no-await-in-loop
+      const mathsChapter = await Chapter.create({
+        title: `Number Systems and Basic Algebra (Class ${level})`,
+        subjectId: maths._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const scienceChapter = await Chapter.create({
+        title: `Matter and Our Environment (Class ${level})`,
+        subjectId: science._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const englishChapter = await Chapter.create({
+        title: `Reading Comprehension and Grammar (Class ${level})`,
+        subjectId: english._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const socialChapter = await Chapter.create({
+        title: `India and the World (Class ${level})`,
+        subjectId: social._id,
+        classLevel: level,
+      });
+
+      // Notes
+      // eslint-disable-next-line no-await-in-loop
+      await Note.create({
+        title: `Important concepts in Mathematics - Class ${level}`,
+        content:
+          'This chapter covers natural numbers, whole numbers, basic operations on integers, and an introduction to simple linear equations used in everyday problems. Practice examples include finding unknown values and checking solutions.',
+        attachments: [],
+        chapterId: mathsChapter._id,
+        subjectId: maths._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Note.create({
+        title: `Key ideas in Science - Class ${level}`,
+        content:
+          'You will learn about states of matter, how substances change from solid to liquid and gas, and examples of physical and chemical changes around you. Diagrams focus on particle arrangement and common experiments.',
+        attachments: [],
+        chapterId: scienceChapter._id,
+        subjectId: science._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Note.create({
+        title: `English skills for Class ${level}`,
+        content:
+          'This note explains how to pick the main idea from a passage, identify supporting details, and avoid common grammar mistakes like subject–verb agreement errors and incorrect tense usage.',
+        attachments: [],
+        chapterId: englishChapter._id,
+        subjectId: english._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Note.create({
+        title: `Social Science overview - Class ${level}`,
+        content:
+          'Topics include basic facts about India, important physical features, neighbouring countries, and how India connects to the rest of the world through trade, culture, and history.',
+        attachments: [],
+        chapterId: socialChapter._id,
+        subjectId: social._id,
+        classLevel: level,
+      });
+
+      // Resources
+      // eslint-disable-next-line no-await-in-loop
+      await Resource.create({
+        title: `Mathematics chapter PDF - Class ${level}`,
+        description: 'Chapter handout with worked examples on number systems and simple equations.',
+        type: 'pdf',
+        url: 'https://your-learning-site.com/resources/maths-number-systems.pdf',
+        chapterId: mathsChapter._id,
+        subjectId: maths._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Resource.create({
+        title: `Science concept video - Class ${level}`,
+        description:
+          'Short video explaining changes of state, evaporation, condensation, and daily-life examples.',
+        type: 'video',
+        url: 'https://your-learning-site.com/videos/science-matter.mp4',
+        chapterId: scienceChapter._id,
+        subjectId: science._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Resource.create({
+        title: `English practice worksheet - Class ${level}`,
+        description: 'Printable worksheet with reading passages and grammar exercises.',
+        type: 'pdf',
+        url: 'https://your-learning-site.com/resources/english-worksheet.pdf',
+        chapterId: englishChapter._id,
+        subjectId: english._id,
+        classLevel: level,
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Resource.create({
+        title: `Map and civics notes - Class ${level}`,
+        description: 'Revision sheet highlighting important locations and basic civics terms.',
+        type: 'pdf',
+        url: 'https://your-learning-site.com/resources/social-india-world.pdf',
+        chapterId: socialChapter._id,
+        subjectId: social._id,
+        classLevel: level,
+      });
+
+      // Tests: two questions per subject
+      // Mathematics test
+      // eslint-disable-next-line no-await-in-loop
+      const mathsQ1 = await Question.create({
+        text: 'What is 12 + 8?',
+        options: ['18', '20', '21', '22'],
+        correctIndex: 1,
+        explanation: '12 + 8 = 20.',
+        chapterId: mathsChapter._id,
+        subjectId: maths._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const mathsQ2 = await Question.create({
+        text: 'Which of the following is a prime number?',
+        options: ['4', '9', '11', '15'],
+        correctIndex: 2,
+        explanation: '11 has only two factors, 1 and 11.',
+        chapterId: mathsChapter._id,
+        subjectId: maths._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Test.create({
+        title: `Mathematics basics quiz - Class ${level}`,
+        description: 'Check your understanding of number operations and prime numbers.',
+        chapterId: mathsChapter._id,
+        subjectId: maths._id,
+        classLevel: level,
+        questions: [mathsQ1._id, mathsQ2._id],
+        timeLimitMinutes: 10,
+      });
+
+      // Science test
+      // eslint-disable-next-line no-await-in-loop
+      const sciQ1 = await Question.create({
+        text: 'When water changes from liquid to gas, the process is called:',
+        options: ['Evaporation', 'Condensation', 'Freezing', 'Melting'],
+        correctIndex: 0,
+        explanation: 'Evaporation is the change of state from liquid to gas.',
+        chapterId: scienceChapter._id,
+        subjectId: science._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const sciQ2 = await Question.create({
+        text: 'Which of the following is a renewable source of energy?',
+        options: ['Coal', 'Petroleum', 'Solar energy', 'Natural gas'],
+        correctIndex: 2,
+        explanation: 'Solar energy can be used again and again and does not get exhausted.',
+        chapterId: scienceChapter._id,
+        subjectId: science._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Test.create({
+        title: `Science fundamentals quiz - Class ${level}`,
+        description: 'Short quiz on states of matter and sources of energy.',
+        chapterId: scienceChapter._id,
+        subjectId: science._id,
+        classLevel: level,
+        questions: [sciQ1._id, sciQ2._id],
+        timeLimitMinutes: 10,
+      });
+
+      // English test
+      // eslint-disable-next-line no-await-in-loop
+      const engQ1 = await Question.create({
+        text: 'Choose the sentence with correct grammar:',
+        options: [
+          'She don\'t like maths.',
+          'She doesn\'t likes maths.',
+          'She doesn\'t like maths.',
+          'She not like maths.',
+        ],
+        correctIndex: 2,
+        explanation: '`She doesn’t like maths` is grammatically correct.',
+        chapterId: englishChapter._id,
+        subjectId: english._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const engQ2 = await Question.create({
+        text: 'The word "rapid" means:',
+        options: ['Very slow', 'Very fast', 'Very small', 'Very loud'],
+        correctIndex: 1,
+        explanation: '“Rapid” is a synonym of “very fast”.',
+        chapterId: englishChapter._id,
+        subjectId: english._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Test.create({
+        title: `English skills quiz - Class ${level}`,
+        description: 'Two quick questions on grammar and vocabulary.',
+        chapterId: englishChapter._id,
+        subjectId: english._id,
+        classLevel: level,
+        questions: [engQ1._id, engQ2._id],
+        timeLimitMinutes: 10,
+      });
+
+      // Social Science test
+      // eslint-disable-next-line no-await-in-loop
+      const socQ1 = await Question.create({
+        text: 'Delhi is the capital of which country?',
+        options: ['India', 'Nepal', 'Sri Lanka', 'Bangladesh'],
+        correctIndex: 0,
+        explanation: 'New Delhi is the capital city of India.',
+        chapterId: socialChapter._id,
+        subjectId: social._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      const socQ2 = await Question.create({
+        text: 'The Constitution of India came into effect on:',
+        options: ['15 August 1947', '26 January 1950', '2 October 1869', '26 November 1949'],
+        correctIndex: 1,
+        explanation: 'The Constitution of India was enforced on 26 January 1950.',
+        chapterId: socialChapter._id,
+        subjectId: social._id,
+        classLevel: level,
+        difficulty: 'easy',
+      });
+
+      // eslint-disable-next-line no-await-in-loop
+      await Test.create({
+        title: `Social Science basics quiz - Class ${level}`,
+        description: 'Questions on India, its capital, and important dates.',
+        chapterId: socialChapter._id,
+        subjectId: social._id,
+        classLevel: level,
+        questions: [socQ1._id, socQ2._id],
+        timeLimitMinutes: 10,
+      });
     }
 
-    const class10 = classes.find((c) => c.level === 10);
-
-    // Basic subjects for class 10
-    const math = await Subject.create({ name: 'Mathematics', classLevel: 10 });
-    const science = await Subject.create({ name: 'Science', classLevel: 10 });
-
-    // Chapters
-    const algebra = await Chapter.create({
-      title: 'Algebra - Linear Equations',
-      subjectId: math._id,
-      classLevel: 10,
-    });
-
-    const physics = await Chapter.create({
-      title: 'Physics - Motion',
-      subjectId: science._id,
-      classLevel: 10,
-    });
-
-    // Notes
-    await Note.create({
-      title: 'Introduction to Linear Equations',
-      content:
-        'A linear equation in one variable is an equation that can be written in the form ax + b = 0, where a and b are real numbers and a ≠ 0.',
-      attachments: [],
-      chapterId: algebra._id,
-      subjectId: math._id,
-      classLevel: 10,
-    });
-
-    await Note.create({
-      title: 'Types of Motion',
-      content:
-        'Motion can be classified as uniform and non-uniform. In uniform motion, an object covers equal distances in equal intervals of time.',
-      attachments: [],
-      chapterId: physics._id,
-      subjectId: science._id,
-      classLevel: 10,
-    });
-
-    // Resources
-    await Resource.create({
-      title: 'NCERT Linear Equations PDF',
-      description: 'NCERT chapter on Linear Equations (sample link).',
-      type: 'pdf',
-      url: 'https://example.com/ncert-linear-equations.pdf',
-      chapterId: algebra._id,
-      subjectId: math._id,
-      classLevel: 10,
-    });
-
-    await Resource.create({
-      title: 'Kinematics Basics Video',
-      description: 'Introductory video on motion.',
-      type: 'video',
-      url: 'https://example.com/kinematics-video',
-      chapterId: physics._id,
-      subjectId: science._id,
-      classLevel: 10,
-    });
-
-    // Questions for algebra test
-    const q1 = await Question.create({
-      text: 'What is the solution of 2x + 4 = 0?',
-      options: ['x = 2', 'x = -2', 'x = 4', 'x = -4'],
-      correctIndex: 1,
-      explanation: '2x + 4 = 0 → 2x = -4 → x = -2.',
-      chapterId: algebra._id,
-      subjectId: math._id,
-      classLevel: 10,
-      difficulty: 'easy',
-    });
-
-    const q2 = await Question.create({
-      text: 'A linear equation in one variable has:',
-      options: ['No solution', 'Exactly one solution', 'Two solutions', 'Infinitely many solutions'],
-      correctIndex: 1,
-      explanation: 'A linear equation in one variable has a unique solution.',
-      chapterId: algebra._id,
-      subjectId: math._id,
-      classLevel: 10,
-      difficulty: 'easy',
-    });
-
-    // Algebra test
-    await Test.create({
-      title: 'Algebra Basics Quiz',
-      description: 'Check your understanding of linear equations.',
-      chapterId: algebra._id,
-      subjectId: math._id,
-      classLevel: 10,
-      questions: [q1._id, q2._id],
-      timeLimitMinutes: 15,
-    });
-
     // eslint-disable-next-line no-console
-    console.log('Seeding completed successfully for class', class10.name);
+    console.log('Seeding completed successfully for classes 2 to 12');
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('Seeding failed:', err);
