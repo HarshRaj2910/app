@@ -18,14 +18,14 @@ export default function Navbar() {
     }
   };
 
-  return (
+  return ( 
     <nav className="navbar">
       <div className="navbar-left">
         <Link to="/" className="brand-pill">
           <span className="brand-logo">★</span>
           <span className="brand-text">
             Edu
-            <span className="brand-text-accent">MERN</span>
+            <span className="brand-text-accent">Sphere09</span>
           </span>
         </Link>
         <div className="nav-pill-group">
