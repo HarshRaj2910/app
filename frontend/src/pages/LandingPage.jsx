@@ -16,24 +16,62 @@ export default function LandingPage() {
   return (
     <>
       <section className="hero">
-        <div className="hero-content">
-          <p className="eyebrow">Made for CBSE / school learners</p>
-          <h1>Smart learning hub for classes 2 to 12</h1>
-          <p>
-            Structured notes, curated resources, and mock tests in one place. Learn at your own pace
-            and track your progress every week.
-          </p>
-          <div className="hero-actions">
-            <Link to="/signup" className="btn-primary">
-              Start learning free
-            </Link>
-            <Link to="/login" className="btn-secondary">
-              I already have an account
-            </Link>
+        <div className="hero-inner">
+          <div className="hero-content">
+            <p className="eyebrow">Made for CBSE / school learners</p>
+            <h1>Smart learning hub for classes 2 to 12</h1>
+            <p>
+              Structured notes, curated resources, and mock tests in one place. Learn at your own
+              pace and track your progress every week.
+            </p>
+            <div className="hero-actions">
+              <Link to="/signup" className="btn-primary">
+                Start learning free
+              </Link>
+              <Link to="/login" className="btn-secondary">
+                I already have an account
+              </Link>
+            </div>
+            <p className="hero-sub">
+              No credit card. Just sign up, pick your class, and start practicing.
+            </p>
+            <div className="hero-metrics">
+              <div className="metric-card">
+                <span className="metric-number">2–12</span>
+                <span className="metric-label">All classes covered</span>
+              </div>
+              <div className="metric-card">
+                <span className="metric-number">4</span>
+                <span className="metric-label">Core subjects</span>
+              </div>
+              <div className="metric-card">
+                <span className="metric-number">100%</span>
+                <span className="metric-label">Free mock tests</span>
+              </div>
+            </div>
           </div>
-          <p className="hero-sub">
-            No credit card. Just sign up, pick your class, and start practicing.
-          </p>
+          <div className="hero-visual">
+            <div className="hero-notes-card">
+              <h3>Today&apos;s focus</h3>
+              <ul>
+                <li>✓ Algebra basics (Maths)</li>
+                <li>✓ States of matter (Science)</li>
+                <li>✓ Reading practice (English)</li>
+              </ul>
+              <button
+                type="button"
+                className="btn-primary hero-small-btn"
+                onClick={handleQuickStartClick}
+              >
+                Open subjects
+              </button>
+            </div>
+            <div className="hero-badges">
+              <div className="badge-card badge-blue">Notes</div>
+              <div className="badge-card badge-yellow">Resources</div>
+              <div className="badge-card badge-red">Mock tests</div>
+            </div>
+          </div>
         </div>
       </section>
 
